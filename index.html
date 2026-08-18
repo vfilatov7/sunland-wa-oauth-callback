@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SunLand — Embedded Signup callback</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 700px; margin: 3rem auto; padding: 0 1rem; background:#0b0b0f; color:#eaeaea; }
+  h1 { font-size: 1.3rem; }
+  .box { background:#16161d; border:1px solid #2a2a35; border-radius:8px; padding:1rem 1.25rem; margin-top:1rem; word-break: break-all; }
+  .label { color:#8a8a99; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.25rem; }
+  .value { font-family: ui-monospace, Menlo, monospace; font-size:.95rem; }
+  .empty { color:#666; font-style: italic; }
+</style>
+</head>
+<body>
+  <h1>Embedded Signup — callback received</h1>
+  <p>Техническая страница для теста подключения WhatsApp-номера (Redirect URI). Скопируй значения ниже.</p>
+  <div id="out"></div>
+  <script>
+    function paramsToRows(str) {
+      if (!str) return [];
+      var p = new URLSearchParams(str.replace(/^[?#]/, ''));
+      return Array.from(p.entries());
+    }
+
+    function addBox(label, value) {
+      var box = document.createElement('div');
+      box.className = 'box';
+      var l = document.createElement('div');
+      l.className = 'label';
+      l.textContent = label;
+      var v = document.createElement('div');
+      v.className = 'value';
+      v.textContent = value;
+      box.appendChild(l);
+      box.appendChild(v);
+      document.getElementById('out').appendChild(box);
+    }
+
+    var rows = paramsToRows(window.location.search).concat(paramsToRows(window.location.hash));
+
+    if (rows.length === 0) {
+      var box = document.createElement('div');
+      box.className = 'box';
+      var span = document.createElement('span');
+      span.className = 'empty';
+      span.textContent = 'Параметров в адресе нет — если страницу просто открыли для проверки, это нормально.';
+      box.appendChild(span);
+      document.getElementById('out').appendChild(box);
+    } else {
+      rows.forEach(function (entry) { addBox(entry[0], entry[1]); });
+    }
+
+    addBox('Полный URL', window.location.href);
+  </script>
+</body>
+</html>
